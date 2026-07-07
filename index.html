@@ -493,12 +493,16 @@
       return { lat: m.coordinates.y, lng: m.coordinates.x, label: m.matchedAddress };
     });
   }
-  // Wisconsin bounding box, used to bias/restrict address lookups since this
-  // site only covers Wisconsin teaching jobs.
-  var WI_VIEWBOX = "viewbox=-92.8894,47.3025,-86.2495,42.4919&bounded=1";
+  // This site only covers Wisconsin jobs. Nominatim's freeform "q" search
+  // treats the final word as a prefix (unlike its structured "street="
+  // param, which requires whole words) — appending ", Wisconsin" scopes
+  // results to the state while keeping that prefix matching for live typing.
+  function wiQuery(addr) {
+    return /wisconsin|\bwi\b/i.test(addr) ? addr : addr + ", Wisconsin";
+  }
 
   function geocodeNominatim(addr) {
-    var url = "https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=us&" + WI_VIEWBOX + "&q=" + encodeURIComponent(addr);
+    var url = "https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=us&q=" + encodeURIComponent(wiQuery(addr));
     return fetch(url).then(function (r) { return r.json(); }).then(function (j) {
       if (!j || !j.length) return null;
       return { lat: Number(j[0].lat), lng: Number(j[0].lon), label: j[0].display_name.split(",").slice(0, 3).join(",") };
@@ -785,7 +789,7 @@
   function fetchSuggestions(q) {
     if (suggestController) suggestController.abort();
     suggestController = new AbortController();
-    var url = "https://nominatim.openstreetmap.org/search?format=json&limit=6&countrycodes=us&" + WI_VIEWBOX + "&q=" + encodeURIComponent(q);
+    var url = "https://nominatim.openstreetmap.org/search?format=json&limit=6&countrycodes=us&q=" + encodeURIComponent(wiQuery(q));
     fetch(url, { signal: suggestController.signal }).then(function (r) { return r.json(); })
       .then(function (list) { renderSuggestions(list); })
       .catch(function (e) { if (e.name !== "AbortError") hideSuggestions(); });
@@ -794,8 +798,8 @@
   $("addrInput").addEventListener("input", function () {
     var q = this.value.trim();
     clearTimeout(suggestTimer);
-    if (q.length < 4) { hideSuggestions(); return; }
-    suggestTimer = setTimeout(function () { fetchSuggestions(q); }, 350);
+    if (q.length < 3) { hideSuggestions(); return; }
+    suggestTimer = setTimeout(function () { fetchSuggestions(q); }, 150);
   });
 
   document.addEventListener("click", function (e) {
