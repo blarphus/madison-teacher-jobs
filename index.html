@@ -3,274 +3,300 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Wisconsin Teacher Job Finder</title>
-<meta name="description" content="Find recent teaching jobs in Wisconsin near your address. Updated daily from WECAN and MMSD.">
-<style>
-  :root {
-    --bg: #f4f6fb;
-    --surface: #ffffff;
-    --surface-2: #eef1f8;
-    --text: #17203a;
-    --muted: #5b6478;
-    --line: #dde3ef;
-    --accent: #2f5fde;
-    --accent-soft: #e4ebfd;
-    --accent-text: #274fba;
-    --good: #157a4a;
-    --good-soft: #dcf3e6;
-    --warn: #9a5b00;
-    --warn-soft: #fdeecd;
-    --shadow: 0 1px 2px rgba(23,32,58,.06), 0 8px 24px rgba(23,32,58,.07);
-    --radius: 14px;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #0f1420;
-      --surface: #171e2e;
-      --surface-2: #1f2839;
-      --text: #e7ebf5;
-      --muted: #98a2b8;
-      --line: #2a3650;
-      --accent: #7d9bff;
-      --accent-soft: #24304d;
-      --accent-text: #a9bdff;
-      --good: #55c78d;
-      --good-soft: #163826;
-      --warn: #e3aa4e;
-      --warn-soft: #3a2c12;
-      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+<title>Wisconsin Teacher Job Board</title>
+<meta name="description" content="Recent teaching jobs across Wisconsin, searchable by distance from your address. Updated every morning from WECAN and MMSD.">
+<script>
+  (function () {
+    var t;
+    try { t = localStorage.getItem("jf_theme"); } catch (e) {}
+    if (t !== "light" && t !== "dark") {
+      t = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
     }
+    document.documentElement.setAttribute("data-theme", t);
+  })();
+</script>
+<style>
+  :root[data-theme="light"] {
+    --bg: #f6f4ee;
+    --surface: #fdfcf9;
+    --surface-2: #efece3;
+    --text: #1d1c18;
+    --muted: #6b675c;
+    --line: #d9d4c5;
+    --line-strong: #1d1c18;
+    --accent: #205e42;
+    --accent-ink: #17462f;
+    --accent-soft: #e2ece5;
+    --highlight: #8a4b0f;
+    --highlight-soft: #f3e5d2;
+    --link: #205e42;
+  }
+  :root[data-theme="dark"] {
+    --bg: #191a17;
+    --surface: #211f1c;
+    --surface-2: #2a2823;
+    --text: #ebe7dc;
+    --muted: #a39d8e;
+    --line: #3a372f;
+    --line-strong: #ebe7dc;
+    --accent: #7dbb97;
+    --accent-ink: #9fd0b3;
+    --accent-soft: #26332b;
+    --highlight: #d9a05e;
+    --highlight-soft: #35291a;
+    --link: #8fc4a5;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
   body {
     background: var(--bg);
     color: var(--text);
-    font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font: 15.5px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
-  a { color: var(--accent-text); }
+  a { color: var(--link); }
+  .serif { font-family: Georgia, "Iowan Old Style", "Times New Roman", serif; }
 
-  .wrap { max-width: 1060px; margin: 0 auto; padding: 0 20px 80px; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 20px 72px; }
 
-  /* ---------- Hero ---------- */
-  .hero { padding: 44px 0 10px; }
-  .hero h1 {
-    margin: 0 0 6px;
-    font-size: clamp(26px, 4.5vw, 38px);
-    font-weight: 800;
-    letter-spacing: -.02em;
+  /* ---------- masthead ---------- */
+  .masthead { padding: 30px 0 0; }
+  .mast-top {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+    border-bottom: 3px double var(--line-strong);
+    padding-bottom: 14px;
   }
-  .hero h1 .accent { color: var(--accent-text); }
-  .hero p.sub { margin: 0; color: var(--muted); font-size: 16px; max-width: 640px; }
-  .hero .meta { margin-top: 10px; font-size: 13px; color: var(--muted); }
-
-  /* ---------- Search card ---------- */
-  .search-card {
-    background: var(--surface);
+  .wordmark {
+    font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+    font-size: clamp(24px, 4.2vw, 34px);
+    font-weight: 700;
+    letter-spacing: -.015em;
+    margin: 0;
+  }
+  .wordmark .st { font-style: italic; font-weight: 400; }
+  .theme-btn {
     border: 1px solid var(--line);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 18px;
-    margin-top: 20px;
+    background: var(--surface);
+    color: var(--text);
+    font: inherit; font-size: 13px;
+    padding: 5px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    white-space: nowrap;
   }
-  .search-row { display: flex; gap: 10px; flex-wrap: wrap; }
-  .addr-box { flex: 1 1 320px; position: relative; }
+  .theme-btn:hover { border-color: var(--muted); }
+  .mast-sub {
+    display: flex; flex-wrap: wrap; gap: 4px 18px;
+    justify-content: space-between;
+    font-size: 13px; color: var(--muted);
+    padding: 8px 0 0;
+  }
+
+  /* ---------- search ---------- */
+  .search-block {
+    margin-top: 26px;
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--accent);
+    background: var(--surface);
+    padding: 16px 18px 14px;
+  }
+  .search-block .lede {
+    margin: 0 0 12px;
+    font-size: 14.5px;
+    color: var(--muted);
+  }
+  .search-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .addr-box { flex: 1 1 300px; }
   .addr-box input {
     width: 100%;
-    padding: 12px 14px 12px 40px;
-    font-size: 16px;
-    border: 1.5px solid var(--line);
-    border-radius: 10px;
-    background: var(--surface-2);
+    padding: 10px 12px;
+    font: inherit;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: var(--bg);
     color: var(--text);
     outline: none;
-    transition: border-color .15s;
   }
   .addr-box input:focus { border-color: var(--accent); }
-  .addr-box .pin {
-    position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
-    color: var(--muted); pointer-events: none;
-  }
   select, .btn {
-    font: inherit;
-    border-radius: 10px;
-    border: 1.5px solid var(--line);
-    background: var(--surface-2);
+    font: inherit; font-size: 14.5px;
+    border-radius: 3px;
+    border: 1px solid var(--line);
+    background: var(--surface);
     color: var(--text);
-    padding: 11px 12px;
+    padding: 9px 11px;
     cursor: pointer;
   }
   select:focus { outline: none; border-color: var(--accent); }
-  .btn { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; transition: filter .12s, background .12s; }
-  .btn:hover { filter: brightness(1.04); }
-  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .btn.ghost { background: transparent; }
+  .btn { font-weight: 600; }
+  .btn:hover { border-color: var(--muted); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+  .btn.primary:hover { background: var(--accent-ink); border-color: var(--accent-ink); }
+  .btn.quiet { background: transparent; color: var(--muted); }
   .btn:disabled { opacity: .55; cursor: default; }
-  .search-hint { margin: 10px 2px 0; font-size: 13px; color: var(--muted); min-height: 18px; }
-  .search-hint.err { color: #c2413b; }
-  .search-hint.ok  { color: var(--good); }
+  .search-hint { margin: 9px 2px 0; font-size: 13px; color: var(--muted); min-height: 18px; }
+  .search-hint.err { color: #a33d33; }
   .loc-chip {
     display: inline-flex; align-items: center; gap: 8px;
-    background: var(--good-soft); color: var(--good);
-    border-radius: 999px; padding: 3px 12px; font-size: 13px; font-weight: 600;
+    color: var(--accent-ink); font-weight: 600;
   }
   .loc-chip button {
-    border: none; background: none; color: inherit; cursor: pointer;
-    font-size: 15px; padding: 0; line-height: 1;
+    border: 1px solid var(--line); background: none; color: var(--muted); cursor: pointer;
+    font-size: 12px; line-height: 1; padding: 2px 6px; border-radius: 3px;
   }
+  .loc-chip button:hover { color: var(--text); }
 
-  /* ---------- Filters ---------- */
-  .filters {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 16px 18px;
-    margin-top: 16px;
-  }
-  .filter-groups { display: flex; flex-wrap: wrap; gap: 18px 28px; }
+  /* ---------- filters ---------- */
+  .filters { margin-top: 22px; border-top: 1px solid var(--line-strong); padding-top: 14px; }
+  .filter-groups { display: flex; flex-wrap: wrap; gap: 14px 30px; }
   .fgroup .flabel {
     font-size: 11px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: .08em; color: var(--muted); margin-bottom: 7px;
+    letter-spacing: .1em; color: var(--muted); margin-bottom: 6px;
   }
-  .chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
   .chip {
-    border: 1.5px solid var(--line);
-    background: var(--surface-2);
+    border: 1px solid var(--line);
+    background: var(--surface);
     color: var(--text);
-    border-radius: 999px;
-    padding: 5px 13px;
-    font-size: 13.5px; font-weight: 600;
+    border-radius: 3px;
+    padding: 4px 10px;
+    font-size: 13px;
     cursor: pointer; user-select: none;
-    transition: background .12s, border-color .12s, color .12s;
   }
-  .chip:hover { border-color: var(--accent); }
-  .chip.on { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .chip .n { opacity: .75; font-weight: 500; margin-left: 4px; font-size: 12px; }
+  .chip:hover { border-color: var(--muted); }
+  .chip.on {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+    font-weight: 600;
+  }
+  .chip .n { color: var(--muted); font-size: 11.5px; margin-left: 4px; }
   .bar2 {
     display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
-    margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line);
+    margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line);
   }
   .bar2 input[type="search"] {
     flex: 1 1 200px;
-    padding: 9px 12px; font-size: 14.5px;
-    border: 1.5px solid var(--line); border-radius: 10px;
-    background: var(--surface-2); color: var(--text); outline: none;
+    padding: 8px 11px; font: inherit; font-size: 14px;
+    border: 1px solid var(--line); border-radius: 3px;
+    background: var(--bg); color: var(--text); outline: none;
   }
   .bar2 input[type="search"]:focus { border-color: var(--accent); }
-  .bar2 label { font-size: 13.5px; color: var(--muted); display: flex; gap: 6px; align-items: center; }
-  .bar2 select { padding: 8px 10px; font-size: 14px; }
-  .count { margin-left: auto; font-size: 14px; color: var(--muted); white-space: nowrap; }
+  .bar2 label { font-size: 13px; color: var(--muted); display: flex; gap: 6px; align-items: center; }
+  .bar2 select { padding: 7px 9px; font-size: 13.5px; }
+  .count { margin-left: auto; font-size: 13.5px; color: var(--muted); }
   .count strong { color: var(--text); }
 
-  /* ---------- Job list ---------- */
-  .jobs { margin-top: 18px; display: grid; gap: 12px; }
+  /* ---------- job list ---------- */
+  .jobs { margin-top: 10px; }
   .job {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 16px 18px;
+    border-bottom: 1px solid var(--line);
+    padding: 15px 2px 14px;
     display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 4px 16px;
+    grid-template-columns: 1fr 168px;
+    gap: 4px 18px;
   }
-  .job .title { font-size: 17px; font-weight: 700; letter-spacing: -.01em; }
+  .job .title {
+    font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+    font-size: 18px; font-weight: 700; letter-spacing: -.01em;
+    line-height: 1.3;
+  }
   .job .title a { color: var(--text); text-decoration: none; }
-  .job .title a:hover { color: var(--accent-text); text-decoration: underline; }
-  .job .where { color: var(--muted); font-size: 14.5px; margin-top: 2px; }
+  .job .title a:hover { color: var(--link); text-decoration: underline; }
+  .job .where { color: var(--muted); font-size: 14px; margin-top: 3px; }
   .job .where .district { color: var(--text); font-weight: 600; }
-  .job .tags { margin-top: 9px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .job .tags { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 5px; }
   .tag {
-    font-size: 12px; font-weight: 600; border-radius: 6px; padding: 2.5px 8px;
-    background: var(--surface-2); color: var(--muted); border: 1px solid var(--line);
+    font-size: 11.5px; font-weight: 600; border-radius: 2px; padding: 2px 7px;
+    background: var(--surface-2); color: var(--muted);
   }
-  .tag.subject { background: var(--accent-soft); color: var(--accent-text); border-color: transparent; }
-  .tag.level   { background: var(--good-soft); color: var(--good); border-color: transparent; }
-  .tag.new     { background: var(--warn-soft); color: var(--warn); border-color: transparent; }
-  .job .side { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
-  .dist {
-    font-size: 15px; font-weight: 800; color: var(--accent-text);
-    background: var(--accent-soft); border-radius: 8px; padding: 3px 10px;
-  }
-  .dist.na { background: var(--surface-2); color: var(--muted); font-weight: 600; }
+  .tag.subject { background: var(--accent-soft); color: var(--accent-ink); }
+  .tag.new { background: var(--highlight-soft); color: var(--highlight); text-transform: uppercase; letter-spacing: .05em; }
+  .job .side { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+  .dist { font-size: 16px; font-weight: 700; color: var(--accent-ink); font-variant-numeric: tabular-nums; }
+  .dist.na { color: var(--muted); font-weight: 500; font-size: 13px; }
   .dates { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
   .dates b { color: var(--text); font-weight: 600; }
   .apply {
-    display: inline-block; margin-top: 2px;
-    background: var(--accent); color: #fff !important;
-    font-size: 13.5px; font-weight: 700; text-decoration: none;
-    padding: 7px 16px; border-radius: 9px;
+    font-size: 13.5px; font-weight: 600; color: var(--link);
+    text-decoration: none; margin-top: 2px;
   }
-  .apply:hover { filter: brightness(1.08); }
+  .apply:hover { text-decoration: underline; }
   @media (max-width: 560px) {
     .job { grid-template-columns: 1fr; }
-    .job .side { align-items: flex-start; text-align: left; flex-direction: row; flex-wrap: wrap; align-items: center; }
+    .job .side { align-items: flex-start; text-align: left; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 10px; }
   }
 
   .empty, .loading {
-    text-align: center; color: var(--muted); padding: 48px 20px;
-    background: var(--surface); border: 1px dashed var(--line); border-radius: var(--radius);
-    margin-top: 18px;
+    text-align: center; color: var(--muted); padding: 44px 20px;
+    border: 1px dashed var(--line); margin-top: 16px;
   }
-  .more { text-align: center; margin-top: 18px; }
+  .more { text-align: center; margin: 20px 0 0; }
 
-  /* ---------- Alerts card ---------- */
+  /* ---------- alerts ---------- */
   .alerts {
-    margin-top: 34px;
-    background: linear-gradient(135deg, var(--accent-soft), var(--surface));
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 22px;
+    margin-top: 40px;
+    border-top: 3px double var(--line-strong);
+    padding-top: 18px;
   }
-  .alerts h2 { margin: 0 0 4px; font-size: 20px; letter-spacing: -.01em; }
-  .alerts p { margin: 0 0 14px; color: var(--muted); font-size: 14.5px; }
-  .alerts .row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .alerts h2 {
+    font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+    margin: 0 0 4px; font-size: 21px;
+  }
+  .alerts p { margin: 0 0 12px; color: var(--muted); font-size: 14px; max-width: 620px; }
+  .alerts .row { display: flex; gap: 8px; flex-wrap: wrap; }
   .alerts input[type="email"] {
-    flex: 1 1 260px; padding: 11px 14px; font-size: 15px;
-    border: 1.5px solid var(--line); border-radius: 10px;
-    background: var(--surface); color: var(--text); outline: none;
+    flex: 1 1 250px; padding: 10px 12px; font: inherit;
+    border: 1px solid var(--line); border-radius: 3px;
+    background: var(--bg); color: var(--text); outline: none;
   }
   .alerts input[type="email"]:focus { border-color: var(--accent); }
-  .alerts .status { margin-top: 10px; font-size: 13.5px; min-height: 18px; }
-  .alerts .status.ok { color: var(--good); }
-  .alerts .status.err { color: #c2413b; }
-  .alerts .prefs { font-size: 13px; color: var(--muted); margin-top: 8px; }
+  .alerts .status { margin-top: 9px; font-size: 13px; min-height: 18px; }
+  .alerts .status.ok { color: var(--accent-ink); }
+  .alerts .status.err { color: #a33d33; }
+  .alerts .prefs { font-size: 12.5px; color: var(--muted); margin-top: 7px; }
 
-  footer { margin-top: 40px; font-size: 13px; color: var(--muted); text-align: center; }
+  footer {
+    margin-top: 44px; padding-top: 12px;
+    border-top: 1px solid var(--line);
+    font-size: 12.5px; color: var(--muted);
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <header class="hero">
-    <h1>Find teaching jobs <span class="accent">near you</span></h1>
-    <p class="sub">Recent openings from WECAN and the Madison Metropolitan School District, updated every morning. Enter your address to see what's within driving distance.</p>
-    <div class="meta" id="updatedMeta">Loading job data…</div>
+  <header class="masthead">
+    <div class="mast-top">
+      <h1 class="wordmark">Teacher Job Board <span class="st">of Wisconsin</span></h1>
+      <button class="theme-btn" id="themeBtn" aria-label="Switch color theme">Dark mode</button>
+    </div>
+    <div class="mast-sub">
+      <span>Openings from WECAN &amp; Madison Metropolitan schools, past three weeks</span>
+      <span id="updatedMeta">Loading&hellip;</span>
+    </div>
   </header>
 
-  <section class="search-card" aria-label="Address search">
+  <section class="search-block" aria-label="Address search">
+    <p class="lede">Enter your address to sort openings by distance from home, then narrow by radius, subject, and grade level.</p>
     <div class="search-row">
       <div class="addr-box">
-        <span class="pin">📍</span>
         <input id="addrInput" type="text" autocomplete="street-address"
-               placeholder="Enter your address, e.g. 515 Pinney St, Madison, WI"
+               placeholder="Street address, city &mdash; e.g. 515 Pinney St, Madison"
                aria-label="Your address">
       </div>
       <select id="radiusSelect" aria-label="Search radius">
-        <option value="5">Within 5 mi</option>
-        <option value="10">Within 10 mi</option>
-        <option value="15">Within 15 mi</option>
-        <option value="25" selected>Within 25 mi</option>
-        <option value="40">Within 40 mi</option>
-        <option value="60">Within 60 mi</option>
-        <option value="100">Within 100 mi</option>
+        <option value="5">Within 5 miles</option>
+        <option value="10">Within 10 miles</option>
+        <option value="15">Within 15 miles</option>
+        <option value="25" selected>Within 25 miles</option>
+        <option value="40">Within 40 miles</option>
+        <option value="60">Within 60 miles</option>
+        <option value="100">Within 100 miles</option>
         <option value="any">Any distance</option>
       </select>
       <button class="btn primary" id="searchBtn">Search</button>
-      <button class="btn ghost" id="geoBtn" title="Use my current location">Use my location</button>
+      <button class="btn quiet" id="geoBtn" title="Use my current location">Use my location</button>
     </div>
     <div class="search-hint" id="searchHint"></div>
   </section>
@@ -286,7 +312,7 @@
         </div>
       </div>
       <div class="fgroup">
-        <div class="flabel">School level</div>
+        <div class="flabel">Grade level</div>
         <div class="chips" id="levelChips"></div>
       </div>
       <div class="fgroup">
@@ -297,52 +323,52 @@
         </div>
       </div>
     </div>
-    <div class="filter-groups" style="margin-top:14px">
+    <div class="filter-groups" style="margin-top:12px">
       <div class="fgroup" style="flex:1">
-        <div class="flabel">Subject <span style="text-transform:none;letter-spacing:0">(none selected = all)</span></div>
+        <div class="flabel">Subject &mdash; none selected shows all</div>
         <div class="chips" id="subjectChips"></div>
       </div>
     </div>
     <div class="bar2">
-      <input type="search" id="textSearch" placeholder="Search titles, districts, locations…" aria-label="Text search">
+      <input type="search" id="textSearch" placeholder="Search titles, districts, locations&hellip;" aria-label="Text search">
       <label>Sort
         <select id="sortSelect">
           <option value="date:desc" selected>Most recent</option>
           <option value="distance:asc">Nearest first</option>
           <option value="date:asc">Oldest first</option>
           <option value="start:asc">Start date (soonest)</option>
-          <option value="district:asc">District (A–Z)</option>
-          <option value="title:asc">Title (A–Z)</option>
+          <option value="district:asc">District (A&ndash;Z)</option>
+          <option value="title:asc">Title (A&ndash;Z)</option>
         </select>
       </label>
       <span class="count" id="countLabel"></span>
     </div>
   </section>
 
-  <div class="loading" id="loadingBox">Loading the latest postings…</div>
+  <div class="loading" id="loadingBox">Loading the latest postings&hellip;</div>
   <section class="jobs" id="jobList" aria-live="polite"></section>
   <div class="empty" id="emptyBox" style="display:none">
     No postings match your filters. Try a larger radius or fewer filters.
   </div>
   <div class="more" id="moreBox" style="display:none">
-    <button class="btn" id="moreBtn">Show more</button>
+    <button class="btn" id="moreBtn">Show more postings</button>
   </div>
 
   <section class="alerts" id="alertsCard" aria-label="Email alerts">
-    <h2>✉️ Get new jobs by email</h2>
-    <p>We check for new postings every morning. Tell us where you are and what you teach, and we'll email you when a matching job is posted. Unsubscribe anytime with one click.</p>
+    <h2>New postings, delivered by email</h2>
+    <p>We check both job boards every morning. Set your address and filters above, leave your email here, and we'll write only when a new opening matches. One-click unsubscribe in every message.</p>
     <div class="row">
       <input type="email" id="alertEmail" placeholder="you@example.com" aria-label="Email address">
-      <button class="btn primary" id="alertBtn">Subscribe to alerts</button>
+      <button class="btn primary" id="alertBtn">Subscribe</button>
     </div>
     <div class="prefs" id="alertPrefs"></div>
     <div class="status" id="alertStatus"></div>
   </section>
 
   <footer>
-    Data from <a href="https://wecan.waspa.org" rel="noopener">WECAN</a> and
+    Listings from <a href="https://wecan.waspa.org" rel="noopener">WECAN</a> and
     <a href="https://mmsd.csod.com/ux/ats/careersite/1/home?c=mmsd" rel="noopener">MMSD Careers</a>.
-    Distances are straight-line estimates. Always confirm details on the official posting.
+    Distances are straight-line estimates &mdash; always confirm details on the official posting.
   </footer>
 </div>
 
@@ -350,12 +376,23 @@
 (function () {
   "use strict";
 
-  // Set after the Apps Script web app is deployed.
   var ALERTS_ENDPOINT = "https://script.google.com/macros/s/AKfycbzRCvjqx6loPc_AU2wZTfIwjQGE2vRlC8YOnkiWNlKjiGXh4tVNMtwdVQwIhn8B4y-VZw/exec";
   var DATA_URL = "jobs.json";
   var PAGE_SIZE = 30;
 
   var $ = function (id) { return document.getElementById(id); };
+
+  /* ---------- theme toggle ---------- */
+  function themeLabel() {
+    return document.documentElement.getAttribute("data-theme") === "dark" ? "Light mode" : "Dark mode";
+  }
+  $("themeBtn").textContent = themeLabel();
+  $("themeBtn").addEventListener("click", function () {
+    var next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    try { localStorage.setItem("jf_theme", next); } catch (e) {}
+    this.textContent = themeLabel();
+  });
 
   var state = {
     jobs: [],
@@ -515,29 +552,29 @@
     var html = slice.map(function (job) {
       var distHtml = job._dist != null
         ? '<span class="dist">' + job._dist.toFixed(job._dist < 10 ? 1 : 0) + " mi</span>"
-        : (state.home ? '<span class="dist na">distance n/a</span>' : "");
+        : (state.home ? '<span class="dist na">distance unknown</span>' : "");
       var tags = "";
       if (job.age <= 1) tags += '<span class="tag new">New</span>';
       job.subjects.forEach(function (s) {
         tags += '<span class="tag subject">' + esc(state.subjectLabels[s] || s) + "</span>";
       });
       job.levels.forEach(function (l) {
-        tags += '<span class="tag level">' + esc(state.levelLabels[l] || l) + "</span>";
+        tags += '<span class="tag">' + esc(state.levelLabels[l] || l) + "</span>";
       });
       tags += '<span class="tag">' + (job.source === "mmsd" ? "MMSD" : "WECAN") + "</span>";
       var dates = "Posted <b>" + fmtDate(job.posted) + "</b>";
-      if (job.start) dates += " · Starts <b>" + esc(job.start) + "</b>";
-      if (job.close) dates += " · Closes <b>" + esc(job.close) + "</b>";
+      if (job.start) dates += "<br>Starts <b>" + esc(job.start) + "</b>";
+      if (job.close) dates += "<br>Closes <b>" + esc(job.close) + "</b>";
       return '<article class="job">' +
         '<div>' +
           '<div class="title"><a href="' + esc(job.url) + '" target="_blank" rel="noopener">' + esc(job.title) + "</a></div>" +
           '<div class="where"><span class="district">' + esc(job.district) + "</span>" +
-            (job.location && job.location !== job.district ? " · " + esc(job.location) : "") + "</div>" +
+            (job.location && job.location !== job.district ? " &middot; " + esc(job.location) : "") + "</div>" +
           '<div class="tags">' + tags + "</div>" +
         "</div>" +
         '<div class="side">' + distHtml +
           '<div class="dates">' + dates + "</div>" +
-          '<a class="apply" href="' + esc(job.url) + '" target="_blank" rel="noopener">View posting</a>' +
+          '<a class="apply" href="' + esc(job.url) + '" target="_blank" rel="noopener">View posting &rarr;</a>' +
         "</div>" +
       "</article>";
     }).join("");
@@ -631,9 +668,9 @@
     state.shown = PAGE_SIZE;
     var hint = $("searchHint");
     if (home) {
-      hint.className = "search-hint ok";
-      hint.innerHTML = '<span class="loc-chip">📍 ' + esc(home.label || "Your location") +
-        ' <button title="Clear location" aria-label="Clear location" id="clearLoc">✕</button></span>';
+      hint.className = "search-hint";
+      hint.innerHTML = '<span class="loc-chip">Showing distances from ' + esc(home.label || "your location") +
+        ' <button title="Clear location" aria-label="Clear location" id="clearLoc">clear</button></span>';
       document.getElementById("clearLoc").addEventListener("click", function () {
         setHome(null);
         $("addrInput").value = "";
@@ -712,7 +749,7 @@
         $("alertBtn").disabled = false;
         if (j && j.status === "ok") {
           status.className = "status ok";
-          status.textContent = "You're subscribed! We'll email you when new matching jobs are posted.";
+          status.textContent = "You're subscribed — check your inbox for a confirmation.";
         } else {
           throw new Error((j && j.message) || "unexpected response");
         }
@@ -728,7 +765,7 @@
     var el = $("alertPrefs");
     if (!el) return;
     if (!state.home) {
-      el.textContent = "Alerts will use the address, radius, subject, and level filters you set above.";
+      el.textContent = "Alerts use the address, radius, subject, and level filters you set above.";
       return;
     }
     var subj = state.subjects.size
@@ -753,7 +790,7 @@
     hint.className = "search-hint";
     hint.textContent = "Getting your location…";
     navigator.geolocation.getCurrentPosition(function (pos) {
-      setHome({ lat: pos.coords.latitude, lng: pos.coords.longitude, label: "Your current location" });
+      setHome({ lat: pos.coords.latitude, lng: pos.coords.longitude, label: "your current location" });
     }, function () {
       hint.className = "search-hint err";
       hint.textContent = "Couldn't get your location — type an address instead.";
@@ -793,8 +830,8 @@
       return j;
     });
     var when = state.generatedAt ? new Date(state.generatedAt) : null;
-    $("updatedMeta").textContent = state.jobs.length + " open postings from the last 3 weeks" +
-      (when ? " · updated " + when.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" }) : "");
+    $("updatedMeta").textContent = state.jobs.length + " open postings" +
+      (when ? " · updated " + when.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" }) : "");
     $("loadingBox").style.display = "none";
     buildChips();
     if (state.home) {
