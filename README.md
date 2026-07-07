@@ -1,4 +1,4 @@
-# Madison Teacher Jobs
+# WECAN Sucks
 
 Static site + daily data feed of recent Wisconsin teaching jobs (WECAN + MMSD).
 `jobs.json` and `geocode_cache.json` are pushed daily by the scraper workflow
