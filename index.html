@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wisconsin Teacher Job Finder</title>
+<meta name="description" content="Find recent teaching jobs in Wisconsin near your address. Updated daily from WECAN and MMSD.">
+<style>
+  :root {
+    --bg: #f4f6fb;
+    --surface: #ffffff;
+    --surface-2: #eef1f8;
+    --text: #17203a;
+    --muted: #5b6478;
+    --line: #dde3ef;
+    --accent: #2f5fde;
+    --accent-soft: #e4ebfd;
+    --accent-text: #274fba;
+    --good: #157a4a;
+    --good-soft: #dcf3e6;
+    --warn: #9a5b00;
+    --warn-soft: #fdeecd;
+    --shadow: 0 1px 2px rgba(23,32,58,.06), 0 8px 24px rgba(23,32,58,.07);
+    --radius: 14px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1420;
+      --surface: #171e2e;
+      --surface-2: #1f2839;
+      --text: #e7ebf5;
+      --muted: #98a2b8;
+      --line: #2a3650;
+      --accent: #7d9bff;
+      --accent-soft: #24304d;
+      --accent-text: #a9bdff;
+      --good: #55c78d;
+      --good-soft: #163826;
+      --warn: #e3aa4e;
+      --warn-soft: #3a2c12;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent-text); }
+
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 0 20px 80px; }
+
+  /* ---------- Hero ---------- */
+  .hero { padding: 44px 0 10px; }
+  .hero h1 {
+    margin: 0 0 6px;
+    font-size: clamp(26px, 4.5vw, 38px);
+    font-weight: 800;
+    letter-spacing: -.02em;
+  }
+  .hero h1 .accent { color: var(--accent-text); }
+  .hero p.sub { margin: 0; color: var(--muted); font-size: 16px; max-width: 640px; }
+  .hero .meta { margin-top: 10px; font-size: 13px; color: var(--muted); }
+
+  /* ---------- Search card ---------- */
+  .search-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px;
+    margin-top: 20px;
+  }
+  .search-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .addr-box { flex: 1 1 320px; position: relative; }
+  .addr-box input {
+    width: 100%;
+    padding: 12px 14px 12px 40px;
+    font-size: 16px;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    background: var(--surface-2);
+    color: var(--text);
+    outline: none;
+    transition: border-color .15s;
+  }
+  .addr-box input:focus { border-color: var(--accent); }
+  .addr-box .pin {
+    position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
+    color: var(--muted); pointer-events: none;
+  }
+  select, .btn {
+    font: inherit;
+    border-radius: 10px;
+    border: 1.5px solid var(--line);
+    background: var(--surface-2);
+    color: var(--text);
+    padding: 11px 12px;
+    cursor: pointer;
+  }
+  select:focus { outline: none; border-color: var(--accent); }
+  .btn { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; transition: filter .12s, background .12s; }
+  .btn:hover { filter: brightness(1.04); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn.ghost { background: transparent; }
+  .btn:disabled { opacity: .55; cursor: default; }
+  .search-hint { margin: 10px 2px 0; font-size: 13px; color: var(--muted); min-height: 18px; }
+  .search-hint.err { color: #c2413b; }
+  .search-hint.ok  { color: var(--good); }
+  .loc-chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--good-soft); color: var(--good);
+    border-radius: 999px; padding: 3px 12px; font-size: 13px; font-weight: 600;
+  }
+  .loc-chip button {
+    border: none; background: none; color: inherit; cursor: pointer;
+    font-size: 15px; padding: 0; line-height: 1;
+  }
+
+  /* ---------- Filters ---------- */
+  .filters {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px 18px;
+    margin-top: 16px;
+  }
+  .filter-groups { display: flex; flex-wrap: wrap; gap: 18px 28px; }
+  .fgroup .flabel {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .08em; color: var(--muted); margin-bottom: 7px;
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .chip {
+    border: 1.5px solid var(--line);
+    background: var(--surface-2);
+    color: var(--text);
+    border-radius: 999px;
+    padding: 5px 13px;
+    font-size: 13.5px; font-weight: 600;
+    cursor: pointer; user-select: none;
+    transition: background .12s, border-color .12s, color .12s;
+  }
+  .chip:hover { border-color: var(--accent); }
+  .chip.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .chip .n { opacity: .75; font-weight: 500; margin-left: 4px; font-size: 12px; }
+  .bar2 {
+    display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+    margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line);
+  }
+  .bar2 input[type="search"] {
+    flex: 1 1 200px;
+    padding: 9px 12px; font-size: 14.5px;
+    border: 1.5px solid var(--line); border-radius: 10px;
+    background: var(--surface-2); color: var(--text); outline: none;
+  }
+  .bar2 input[type="search"]:focus { border-color: var(--accent); }
+  .bar2 label { font-size: 13.5px; color: var(--muted); display: flex; gap: 6px; align-items: center; }
+  .bar2 select { padding: 8px 10px; font-size: 14px; }
+  .count { margin-left: auto; font-size: 14px; color: var(--muted); white-space: nowrap; }
+  .count strong { color: var(--text); }
+
+  /* ---------- Job list ---------- */
+  .jobs { margin-top: 18px; display: grid; gap: 12px; }
+  .job {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px 18px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 4px 16px;
+  }
+  .job .title { font-size: 17px; font-weight: 700; letter-spacing: -.01em; }
+  .job .title a { color: var(--text); text-decoration: none; }
+  .job .title a:hover { color: var(--accent-text); text-decoration: underline; }
+  .job .where { color: var(--muted); font-size: 14.5px; margin-top: 2px; }
+  .job .where .district { color: var(--text); font-weight: 600; }
+  .job .tags { margin-top: 9px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-size: 12px; font-weight: 600; border-radius: 6px; padding: 2.5px 8px;
+    background: var(--surface-2); color: var(--muted); border: 1px solid var(--line);
+  }
+  .tag.subject { background: var(--accent-soft); color: var(--accent-text); border-color: transparent; }
+  .tag.level   { background: var(--good-soft); color: var(--good); border-color: transparent; }
+  .tag.new     { background: var(--warn-soft); color: var(--warn); border-color: transparent; }
+  .job .side { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+  .dist {
+    font-size: 15px; font-weight: 800; color: var(--accent-text);
+    background: var(--accent-soft); border-radius: 8px; padding: 3px 10px;
+  }
+  .dist.na { background: var(--surface-2); color: var(--muted); font-weight: 600; }
+  .dates { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+  .dates b { color: var(--text); font-weight: 600; }
+  .apply {
+    display: inline-block; margin-top: 2px;
+    background: var(--accent); color: #fff !important;
+    font-size: 13.5px; font-weight: 700; text-decoration: none;
+    padding: 7px 16px; border-radius: 9px;
+  }
+  .apply:hover { filter: brightness(1.08); }
+  @media (max-width: 560px) {
+    .job { grid-template-columns: 1fr; }
+    .job .side { align-items: flex-start; text-align: left; flex-direction: row; flex-wrap: wrap; align-items: center; }
+  }
+
+  .empty, .loading {
+    text-align: center; color: var(--muted); padding: 48px 20px;
+    background: var(--surface); border: 1px dashed var(--line); border-radius: var(--radius);
+    margin-top: 18px;
+  }
+  .more { text-align: center; margin-top: 18px; }
+
+  /* ---------- Alerts card ---------- */
+  .alerts {
+    margin-top: 34px;
+    background: linear-gradient(135deg, var(--accent-soft), var(--surface));
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 22px;
+  }
+  .alerts h2 { margin: 0 0 4px; font-size: 20px; letter-spacing: -.01em; }
+  .alerts p { margin: 0 0 14px; color: var(--muted); font-size: 14.5px; }
+  .alerts .row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .alerts input[type="email"] {
+    flex: 1 1 260px; padding: 11px 14px; font-size: 15px;
+    border: 1.5px solid var(--line); border-radius: 10px;
+    background: var(--surface); color: var(--text); outline: none;
+  }
+  .alerts input[type="email"]:focus { border-color: var(--accent); }
+  .alerts .status { margin-top: 10px; font-size: 13.5px; min-height: 18px; }
+  .alerts .status.ok { color: var(--good); }
+  .alerts .status.err { color: #c2413b; }
+  .alerts .prefs { font-size: 13px; color: var(--muted); margin-top: 8px; }
+
+  footer { margin-top: 40px; font-size: 13px; color: var(--muted); text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <h1>Find teaching jobs <span class="accent">near you</span></h1>
+    <p class="sub">Recent openings from WECAN and the Madison Metropolitan School District, updated every morning. Enter your address to see what's within driving distance.</p>
+    <div class="meta" id="updatedMeta">Loading job data…</div>
+  </header>
+
+  <section class="search-card" aria-label="Address search">
+    <div class="search-row">
+      <div class="addr-box">
+        <span class="pin">📍</span>
+        <input id="addrInput" type="text" autocomplete="street-address"
+               placeholder="Enter your address, e.g. 515 Pinney St, Madison, WI"
+               aria-label="Your address">
+      </div>
+      <select id="radiusSelect" aria-label="Search radius">
+        <option value="5">Within 5 mi</option>
+        <option value="10">Within 10 mi</option>
+        <option value="15">Within 15 mi</option>
+        <option value="25" selected>Within 25 mi</option>
+        <option value="40">Within 40 mi</option>
+        <option value="60">Within 60 mi</option>
+        <option value="100">Within 100 mi</option>
+        <option value="any">Any distance</option>
+      </select>
+      <button class="btn primary" id="searchBtn">Search</button>
+      <button class="btn ghost" id="geoBtn" title="Use my current location">Use my location</button>
+    </div>
+    <div class="search-hint" id="searchHint"></div>
+  </section>
+
+  <section class="filters" aria-label="Filters">
+    <div class="filter-groups">
+      <div class="fgroup">
+        <div class="flabel">Posted within</div>
+        <div class="chips" id="ageChips">
+          <button class="chip" data-age="7">Last week</button>
+          <button class="chip" data-age="14">2 weeks</button>
+          <button class="chip on" data-age="21">3 weeks</button>
+        </div>
+      </div>
+      <div class="fgroup">
+        <div class="flabel">School level</div>
+        <div class="chips" id="levelChips"></div>
+      </div>
+      <div class="fgroup">
+        <div class="flabel">Source</div>
+        <div class="chips" id="sourceChips">
+          <button class="chip" data-source="wecan">WECAN</button>
+          <button class="chip" data-source="mmsd">MMSD</button>
+        </div>
+      </div>
+    </div>
+    <div class="filter-groups" style="margin-top:14px">
+      <div class="fgroup" style="flex:1">
+        <div class="flabel">Subject <span style="text-transform:none;letter-spacing:0">(none selected = all)</span></div>
+        <div class="chips" id="subjectChips"></div>
+      </div>
+    </div>
+    <div class="bar2">
+      <input type="search" id="textSearch" placeholder="Search titles, districts, locations…" aria-label="Text search">
+      <label>Sort
+        <select id="sortSelect">
+          <option value="date:desc" selected>Most recent</option>
+          <option value="distance:asc">Nearest first</option>
+          <option value="date:asc">Oldest first</option>
+          <option value="start:asc">Start date (soonest)</option>
+          <option value="district:asc">District (A–Z)</option>
+          <option value="title:asc">Title (A–Z)</option>
+        </select>
+      </label>
+      <span class="count" id="countLabel"></span>
+    </div>
+  </section>
+
+  <div class="loading" id="loadingBox">Loading the latest postings…</div>
+  <section class="jobs" id="jobList" aria-live="polite"></section>
+  <div class="empty" id="emptyBox" style="display:none">
+    No postings match your filters. Try a larger radius or fewer filters.
+  </div>
+  <div class="more" id="moreBox" style="display:none">
+    <button class="btn" id="moreBtn">Show more</button>
+  </div>
+
+  <section class="alerts" id="alertsCard" aria-label="Email alerts">
+    <h2>✉️ Get new jobs by email</h2>
+    <p>We check for new postings every morning. Tell us where you are and what you teach, and we'll email you when a matching job is posted. Unsubscribe anytime with one click.</p>
+    <div class="row">
+      <input type="email" id="alertEmail" placeholder="you@example.com" aria-label="Email address">
+      <button class="btn primary" id="alertBtn">Subscribe to alerts</button>
+    </div>
+    <div class="prefs" id="alertPrefs"></div>
+    <div class="status" id="alertStatus"></div>
+  </section>
+
+  <footer>
+    Data from <a href="https://wecan.waspa.org" rel="noopener">WECAN</a> and
+    <a href="https://mmsd.csod.com/ux/ats/careersite/1/home?c=mmsd" rel="noopener">MMSD Careers</a>.
+    Distances are straight-line estimates. Always confirm details on the official posting.
+  </footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // Set after the Apps Script web app is deployed.
+  var ALERTS_ENDPOINT = "__ALERTS_ENDPOINT__";
+  var DATA_URL = "jobs.json";
+  var PAGE_SIZE = 30;
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  var state = {
+    jobs: [],
+    subjectLabels: {},
+    levelLabels: {},
+    generatedAt: null,
+    home: null,           // {lat, lng, label}
+    radius: 25,           // miles, or "any"
+    ageDays: 21,
+    subjects: new Set(),
+    levels: new Set(),
+    sources: new Set(),
+    text: "",
+    sortKey: "date",
+    sortDir: "desc",
+    shown: PAGE_SIZE
+  };
+
+  /* ---------- utils ---------- */
+  function haversineMiles(lat1, lon1, lat2, lon2) {
+    var R = 3958.8, toRad = Math.PI / 180;
+    var dLat = (lat2 - lat1) * toRad, dLon = (lon2 - lon1) * toRad;
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * toRad) * Math.cos(lat2 * toRad) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function daysAgo(iso) {
+    var d = new Date(iso + "T12:00:00");
+    return Math.floor((Date.now() - d.getTime()) / 86400000);
+  }
+  function fmtDate(iso) {
+    if (!iso) return "";
+    var d = new Date(iso + "T12:00:00");
+    return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  }
+  function parseUS(dateStr) { // "8/19/2026" -> sortable number
+    if (!dateStr) return Infinity;
+    var m = String(dateStr).match(/(\d{1,2})\/(\d{1,2})\/(\d{2,4})/);
+    if (!m) return Infinity;
+    var y = m[3].length === 2 ? "20" + m[3] : m[3];
+    return Number(y) * 10000 + Number(m[1]) * 100 + Number(m[2]);
+  }
+  function saveState() {
+    try {
+      localStorage.setItem("jobfinder", JSON.stringify({
+        home: state.home, radius: state.radius, ageDays: state.ageDays,
+        subjects: Array.from(state.subjects), levels: Array.from(state.levels),
+        sources: Array.from(state.sources), sortKey: state.sortKey, sortDir: state.sortDir
+      }));
+    } catch (e) { /* private mode */ }
+  }
+  function loadState() {
+    try {
+      var raw = localStorage.getItem("jobfinder");
+      if (!raw) return;
+      var s = JSON.parse(raw);
+      if (s.home && typeof s.home.lat === "number") state.home = s.home;
+      if (s.radius) state.radius = s.radius;
+      if (s.ageDays) state.ageDays = s.ageDays;
+      (s.subjects || []).forEach(function (x) { state.subjects.add(x); });
+      (s.levels || []).forEach(function (x) { state.levels.add(x); });
+      (s.sources || []).forEach(function (x) { state.sources.add(x); });
+      if (s.sortKey) { state.sortKey = s.sortKey; state.sortDir = s.sortDir || "asc"; }
+    } catch (e) { /* ignore */ }
+  }
+
+  /* ---------- geocoding ---------- */
+  function geocodeCensus(addr) {
+    var url = "https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?benchmark=Public_AR_Current&format=json&address=" + encodeURIComponent(addr);
+    return fetch(url).then(function (r) { return r.json(); }).then(function (j) {
+      var m = j && j.result && j.result.addressMatches && j.result.addressMatches[0];
+      if (!m) return null;
+      return { lat: m.coordinates.y, lng: m.coordinates.x, label: m.matchedAddress };
+    });
+  }
+  function geocodeNominatim(addr) {
+    var url = "https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=us&q=" + encodeURIComponent(addr);
+    return fetch(url).then(function (r) { return r.json(); }).then(function (j) {
+      if (!j || !j.length) return null;
+      return { lat: Number(j[0].lat), lng: Number(j[0].lon), label: j[0].display_name.split(",").slice(0, 3).join(",") };
+    });
+  }
+  function geocode(addr) {
+    return geocodeCensus(addr).catch(function () { return null; }).then(function (hit) {
+      if (hit) return hit;
+      return geocodeNominatim(addr).catch(function () { return null; });
+    });
+  }
+
+  /* ---------- rendering ---------- */
+  function jobDistance(job) {
+    if (!state.home || job.lat == null) return null;
+    return haversineMiles(state.home.lat, state.home.lng, job.lat, job.lng);
+  }
+
+  function filteredJobs() {
+    var q = state.text.trim().toLowerCase();
+    var out = [];
+    for (var i = 0; i < state.jobs.length; i++) {
+      var job = state.jobs[i];
+      if (job.age > state.ageDays) continue;
+      if (state.sources.size && !state.sources.has(job.source)) continue;
+      if (state.levels.size) {
+        var okL = job.levels.some(function (l) { return state.levels.has(l); });
+        if (!okL) continue;
+      }
+      if (state.subjects.size) {
+        var okS = job.subjects.some(function (s) { return state.subjects.has(s); });
+        if (!okS) continue;
+      }
+      var dist = jobDistance(job);
+      if (state.home && state.radius !== "any") {
+        if (dist == null || dist > Number(state.radius)) continue;
+      }
+      if (q) {
+        var hay = (job.title + " " + job.district + " " + job.location).toLowerCase();
+        if (hay.indexOf(q) === -1) continue;
+      }
+      job._dist = dist;
+      out.push(job);
+    }
+    return out;
+  }
+
+  function cmp(a, b, key) {
+    switch (key) {
+      case "distance": {
+        var da = a._dist == null ? Infinity : a._dist;
+        var db = b._dist == null ? Infinity : b._dist;
+        return da - db;
+      }
+      case "date": return a.posted < b.posted ? -1 : a.posted > b.posted ? 1 : 0;
+      case "start": return parseUS(a.start) - parseUS(b.start);
+      case "district": return a.district.localeCompare(b.district);
+      case "title": return a.title.localeCompare(b.title);
+    }
+    return 0;
+  }
+
+  function render() {
+    var rows = filteredJobs();
+    rows.sort(function (a, b) {
+      var p = cmp(a, b, state.sortKey);
+      if (p !== 0) return state.sortDir === "asc" ? p : -p;
+      var t = cmp(a, b, "date");           // tiebreak: newest first
+      return -t;
+    });
+
+    var total = rows.length;
+    var slice = rows.slice(0, state.shown);
+    var html = slice.map(function (job) {
+      var distHtml = job._dist != null
+        ? '<span class="dist">' + job._dist.toFixed(job._dist < 10 ? 1 : 0) + " mi</span>"
+        : (state.home ? '<span class="dist na">distance n/a</span>' : "");
+      var tags = "";
+      if (job.age <= 1) tags += '<span class="tag new">New</span>';
+      job.subjects.forEach(function (s) {
+        tags += '<span class="tag subject">' + esc(state.subjectLabels[s] || s) + "</span>";
+      });
+      job.levels.forEach(function (l) {
+        tags += '<span class="tag level">' + esc(state.levelLabels[l] || l) + "</span>";
+      });
+      tags += '<span class="tag">' + (job.source === "mmsd" ? "MMSD" : "WECAN") + "</span>";
+      var dates = "Posted <b>" + fmtDate(job.posted) + "</b>";
+      if (job.start) dates += " · Starts <b>" + esc(job.start) + "</b>";
+      if (job.close) dates += " · Closes <b>" + esc(job.close) + "</b>";
+      return '<article class="job">' +
+        '<div>' +
+          '<div class="title"><a href="' + esc(job.url) + '" target="_blank" rel="noopener">' + esc(job.title) + "</a></div>" +
+          '<div class="where"><span class="district">' + esc(job.district) + "</span>" +
+            (job.location && job.location !== job.district ? " · " + esc(job.location) : "") + "</div>" +
+          '<div class="tags">' + tags + "</div>" +
+        "</div>" +
+        '<div class="side">' + distHtml +
+          '<div class="dates">' + dates + "</div>" +
+          '<a class="apply" href="' + esc(job.url) + '" target="_blank" rel="noopener">View posting</a>' +
+        "</div>" +
+      "</article>";
+    }).join("");
+
+    $("jobList").innerHTML = html;
+    $("emptyBox").style.display = total ? "none" : "";
+    $("moreBox").style.display = total > state.shown ? "" : "none";
+    var scope = state.home && state.radius !== "any"
+      ? " within " + state.radius + " mi of " + (state.home.label || "your address")
+      : "";
+    $("countLabel").innerHTML = "<strong>" + total + "</strong> posting" + (total === 1 ? "" : "s") + esc(scope);
+    updateChipCounts();
+    updateAlertPrefs();
+  }
+
+  function chipCountsBase(skip) {
+    // counts respect every filter except the group being counted
+    var saveSubjects = state.subjects, saveLevels = state.levels;
+    if (skip === "subjects") state.subjects = new Set();
+    if (skip === "levels") state.levels = new Set();
+    var rows = filteredJobs();
+    state.subjects = saveSubjects; state.levels = saveLevels;
+    return rows;
+  }
+  function updateChipCounts() {
+    var rows = chipCountsBase("subjects");
+    document.querySelectorAll("#subjectChips .chip").forEach(function (chip) {
+      var key = chip.dataset.subject;
+      var n = rows.filter(function (j) { return j.subjects.indexOf(key) !== -1; }).length;
+      chip.querySelector(".n").textContent = n;
+    });
+    var rowsL = chipCountsBase("levels");
+    document.querySelectorAll("#levelChips .chip").forEach(function (chip) {
+      var key = chip.dataset.level;
+      var n = rowsL.filter(function (j) { return j.levels.indexOf(key) !== -1; }).length;
+      chip.querySelector(".n").textContent = n;
+    });
+  }
+
+  /* ---------- wiring ---------- */
+  function toggleChip(chip, set, key) {
+    if (set.has(key)) { set.delete(key); chip.classList.remove("on"); }
+    else { set.add(key); chip.classList.add("on"); }
+    state.shown = PAGE_SIZE;
+    saveState();
+    render();
+  }
+
+  function buildChips() {
+    var sc = $("subjectChips");
+    Object.keys(state.subjectLabels).forEach(function (key) {
+      var b = document.createElement("button");
+      b.className = "chip" + (state.subjects.has(key) ? " on" : "");
+      b.dataset.subject = key;
+      b.innerHTML = esc(state.subjectLabels[key]) + ' <span class="n"></span>';
+      b.addEventListener("click", function () { toggleChip(b, state.subjects, key); });
+      sc.appendChild(b);
+    });
+    var lc = $("levelChips");
+    Object.keys(state.levelLabels).forEach(function (key) {
+      var b = document.createElement("button");
+      b.className = "chip" + (state.levels.has(key) ? " on" : "");
+      b.dataset.level = key;
+      b.innerHTML = esc(state.levelLabels[key]) + ' <span class="n"></span>';
+      b.addEventListener("click", function () { toggleChip(b, state.levels, key); });
+      lc.appendChild(b);
+    });
+    document.querySelectorAll("#sourceChips .chip").forEach(function (chip) {
+      var key = chip.dataset.source;
+      if (state.sources.has(key)) chip.classList.add("on");
+      chip.addEventListener("click", function () { toggleChip(chip, state.sources, key); });
+    });
+    document.querySelectorAll("#ageChips .chip").forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        document.querySelectorAll("#ageChips .chip").forEach(function (c) { c.classList.remove("on"); });
+        chip.classList.add("on");
+        state.ageDays = Number(chip.dataset.age);
+        state.shown = PAGE_SIZE;
+        saveState();
+        render();
+      });
+      if (Number(chip.dataset.age) === state.ageDays) {
+        document.querySelectorAll("#ageChips .chip").forEach(function (c) { c.classList.remove("on"); });
+        chip.classList.add("on");
+      }
+    });
+  }
+
+  function setHome(home) {
+    state.home = home;
+    state.shown = PAGE_SIZE;
+    var hint = $("searchHint");
+    if (home) {
+      hint.className = "search-hint ok";
+      hint.innerHTML = '<span class="loc-chip">📍 ' + esc(home.label || "Your location") +
+        ' <button title="Clear location" aria-label="Clear location" id="clearLoc">✕</button></span>';
+      document.getElementById("clearLoc").addEventListener("click", function () {
+        setHome(null);
+        $("addrInput").value = "";
+      });
+      if (state.sortKey !== "distance") {
+        state.sortKey = "distance"; state.sortDir = "asc";
+        $("sortSelect").value = "distance:asc";
+      }
+    } else {
+      hint.className = "search-hint";
+      hint.textContent = "";
+      if (state.sortKey === "distance") {
+        state.sortKey = "date"; state.sortDir = "desc";
+        $("sortSelect").value = "date:desc";
+      }
+    }
+    saveState();
+    render();
+  }
+
+  function doSearch() {
+    var addr = $("addrInput").value.trim();
+    var hint = $("searchHint");
+    if (!addr) { setHome(null); return; }
+    $("searchBtn").disabled = true;
+    hint.className = "search-hint";
+    hint.textContent = "Looking up address…";
+    geocode(addr).then(function (hit) {
+      $("searchBtn").disabled = false;
+      if (!hit) {
+        hint.className = "search-hint err";
+        hint.textContent = "Couldn't find that address — try adding city and state.";
+        return;
+      }
+      setHome(hit);
+    });
+  }
+
+  function initAlerts() {
+    if (!ALERTS_ENDPOINT || ALERTS_ENDPOINT.indexOf("script.google.com") === -1) {
+      $("alertsCard").style.display = "none";
+      return;
+    }
+    $("alertBtn").addEventListener("click", function () {
+      var email = $("alertEmail").value.trim();
+      var status = $("alertStatus");
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        status.className = "status err";
+        status.textContent = "Please enter a valid email address.";
+        return;
+      }
+      if (!state.home) {
+        status.className = "status err";
+        status.textContent = "First search for your address above, so we know where to look for jobs.";
+        return;
+      }
+      var payload = {
+        action: "subscribe",
+        email: email,
+        address: state.home.label || $("addrInput").value.trim(),
+        lat: state.home.lat,
+        lng: state.home.lng,
+        radius: state.radius === "any" ? 100 : Number(state.radius),
+        subjects: Array.from(state.subjects),
+        levels: Array.from(state.levels),
+        sources: Array.from(state.sources)
+      };
+      $("alertBtn").disabled = true;
+      status.className = "status";
+      status.textContent = "Subscribing…";
+      fetch(ALERTS_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      }).then(function (r) { return r.json(); }).then(function (j) {
+        $("alertBtn").disabled = false;
+        if (j && j.status === "ok") {
+          status.className = "status ok";
+          status.textContent = "You're subscribed! We'll email you when new matching jobs are posted.";
+        } else {
+          throw new Error((j && j.message) || "unexpected response");
+        }
+      }).catch(function () {
+        $("alertBtn").disabled = false;
+        status.className = "status err";
+        status.textContent = "Something went wrong — please try again in a minute.";
+      });
+    });
+  }
+
+  function updateAlertPrefs() {
+    var el = $("alertPrefs");
+    if (!el) return;
+    if (!state.home) {
+      el.textContent = "Alerts will use the address, radius, subject, and level filters you set above.";
+      return;
+    }
+    var subj = state.subjects.size
+      ? Array.from(state.subjects).map(function (s) { return state.subjectLabels[s] || s; }).join(", ")
+      : "any subject";
+    var lvl = state.levels.size
+      ? Array.from(state.levels).map(function (l) { return state.levelLabels[l] || l; }).join(", ")
+      : "any level";
+    var rad = state.radius === "any" ? "100" : state.radius;
+    el.textContent = "Your alert: jobs within " + rad + " mi of " + (state.home.label || "your address") +
+      " · " + subj + " · " + lvl + ".";
+  }
+
+  /* ---------- boot ---------- */
+  loadState();
+
+  $("searchBtn").addEventListener("click", doSearch);
+  $("addrInput").addEventListener("keydown", function (e) { if (e.key === "Enter") doSearch(); });
+  $("geoBtn").addEventListener("click", function () {
+    if (!navigator.geolocation) return;
+    var hint = $("searchHint");
+    hint.className = "search-hint";
+    hint.textContent = "Getting your location…";
+    navigator.geolocation.getCurrentPosition(function (pos) {
+      setHome({ lat: pos.coords.latitude, lng: pos.coords.longitude, label: "Your current location" });
+    }, function () {
+      hint.className = "search-hint err";
+      hint.textContent = "Couldn't get your location — type an address instead.";
+    });
+  });
+  $("radiusSelect").addEventListener("change", function () {
+    state.radius = this.value === "any" ? "any" : Number(this.value);
+    state.shown = PAGE_SIZE;
+    saveState();
+    render();
+  });
+  $("sortSelect").addEventListener("change", function () {
+    var parts = this.value.split(":");
+    state.sortKey = parts[0]; state.sortDir = parts[1];
+    saveState();
+    render();
+  });
+  $("textSearch").addEventListener("input", function () {
+    state.text = this.value;
+    state.shown = PAGE_SIZE;
+    render();
+  });
+  $("moreBtn").addEventListener("click", function () {
+    state.shown += PAGE_SIZE;
+    render();
+  });
+
+  $("radiusSelect").value = String(state.radius);
+  $("sortSelect").value = state.sortKey + ":" + state.sortDir;
+
+  fetch(DATA_URL + "?t=" + Date.now()).then(function (r) { return r.json(); }).then(function (data) {
+    state.subjectLabels = data.subject_labels || {};
+    state.levelLabels = data.level_labels || {};
+    state.generatedAt = data.generated_at;
+    state.jobs = (data.jobs || []).map(function (j) {
+      j.age = daysAgo(j.posted);
+      return j;
+    });
+    var when = state.generatedAt ? new Date(state.generatedAt) : null;
+    $("updatedMeta").textContent = state.jobs.length + " open postings from the last 3 weeks" +
+      (when ? " · updated " + when.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" }) : "");
+    $("loadingBox").style.display = "none";
+    buildChips();
+    if (state.home) {
+      $("addrInput").value = state.home.label || "";
+      setHome(state.home);
+    } else {
+      render();
+    }
+    initAlerts();
+  }).catch(function (e) {
+    $("loadingBox").textContent = "Couldn't load job data. Please refresh in a minute.";
+  });
+})();
+</script>
+</body>
+</html>
