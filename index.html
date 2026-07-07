@@ -279,18 +279,30 @@
     border: 1px solid var(--line); border-radius: 4px; overflow: hidden;
   }
   .alert-prefs li {
-    display: flex; gap: 12px; align-items: baseline;
+    display: flex; gap: 12px; align-items: center;
     padding: 8px 12px; border-bottom: 1px solid var(--line);
     background: var(--surface);
+    cursor: pointer;
+    transition: background .12s;
   }
   .alert-prefs li:last-child { border-bottom: none; }
   .alert-prefs li:nth-child(even) { background: var(--surface-2); }
+  .alert-prefs li:hover, .alert-prefs li:focus-visible {
+    background: var(--accent-soft);
+    outline: none;
+  }
   .alert-prefs .k {
     flex: 0 0 96px;
     font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
     color: var(--muted);
   }
   .alert-prefs .v { flex: 1; font-size: 13.5px; color: var(--text); }
+  .alert-prefs .edit {
+    flex: none;
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
+    color: var(--accent-ink);
+    white-space: nowrap;
+  }
 
   footer {
     margin-top: 44px; padding-top: 12px;
@@ -321,7 +333,7 @@
     <div class="search-row">
       <div class="addr-box">
         <input id="addrInput" type="search" name="job-search-location" autocomplete="off" spellcheck="false"
-               placeholder="Street address, city &mdash; e.g. 515 Pinney St, Madison"
+               placeholder="Street address, city, e.g. 515 Pinney St, Madison"
                aria-label="Your address" role="combobox" aria-expanded="false"
                aria-autocomplete="list" aria-controls="addrSuggest">
         <div class="suggestions" id="addrSuggest" role="listbox"></div>
@@ -366,7 +378,7 @@
     </div>
     <div class="filter-groups" style="margin-top:12px">
       <div class="fgroup" style="flex:1">
-        <div class="flabel">Subject &mdash; none selected shows all</div>
+        <div class="flabel">Subject (none selected shows all)</div>
         <div class="chips" id="subjectChips"></div>
       </div>
     </div>
@@ -397,7 +409,7 @@
 
   <section class="alerts" id="alertsCard" aria-label="Email alerts">
     <h2>New postings, delivered by email</h2>
-    <p>Both job boards get checked every morning. An alert goes out only when a new posting matches these preferences &mdash; set the address and filters above to change them:</p>
+    <p>Both job boards get checked every morning. An alert goes out only when a new posting matches these preferences. Set the address and filters above to change them:</p>
     <ul class="alert-prefs" id="alertPrefs"></ul>
     <div class="row">
       <input type="email" id="alertEmail" placeholder="you@example.com" aria-label="Email address">
@@ -409,7 +421,7 @@
   <footer>
     Listings from <a href="https://wecan.waspa.org" rel="noopener">WECAN</a> and
     <a href="https://mmsd.csod.com/ux/ats/careersite/1/home?c=mmsd" rel="noopener">MMSD Careers</a>.
-    Distances are straight-line estimates &mdash; always confirm details on the official posting.
+    Distances are straight-line estimates. Always confirm details on the official posting.
   </footer>
 </div>
 
@@ -778,7 +790,7 @@
       $("searchBtn").disabled = false;
       if (!hit) {
         hint.className = "search-hint err";
-        hint.textContent = "Couldn't find that address — try adding city and state.";
+        hint.textContent = "Couldn't find that address, try adding city and state.";
         return;
       }
       setHome(hit);
@@ -881,7 +893,7 @@
       }
       if (!state.home) {
         status.className = "status err";
-        status.textContent = "Enter an address above first — alerts are matched by location, distance, subject, and grade level.";
+        status.textContent = "Enter an address above first. Alerts are matched by location, distance, subject, and grade level.";
         return;
       }
       var payload = {
@@ -906,14 +918,14 @@
         $("alertBtn").disabled = false;
         if (j && j.status === "ok") {
           status.className = "status ok";
-          status.textContent = "You're subscribed — check your inbox for a confirmation.";
+          status.textContent = "You're subscribed. Check your inbox for a confirmation.";
         } else {
           throw new Error((j && j.message) || "unexpected response");
         }
       }).catch(function () {
         $("alertBtn").disabled = false;
         status.className = "status err";
-        status.textContent = "Something went wrong — please try again in a minute.";
+        status.textContent = "Something went wrong. Please try again in a minute.";
       });
     });
   }
@@ -929,12 +941,37 @@
     var lvl = state.levels.size
       ? Array.from(state.levels).map(function (l) { return state.levelLabels[l] || l; }).join(", ")
       : "Any grade level";
-    el.innerHTML =
-      '<li><span class="k">Location</span><span class="v">' + esc(home.label || "Not set") + "</span></li>" +
-      '<li><span class="k">Distance</span><span class="v">' + esc(dist) + "</span></li>" +
-      '<li><span class="k">Subject</span><span class="v">' + esc(subj) + "</span></li>" +
-      '<li><span class="k">Grade level</span><span class="v">' + esc(lvl) + "</span></li>";
+    el.innerHTML = [
+      ["addrInput", "Location", home.label || "Not set"],
+      ["radiusSelect", "Distance", dist],
+      ["subjectChips", "Subject", subj],
+      ["levelChips", "Grade level", lvl]
+    ].map(function (row) {
+      return '<li data-target="' + row[0] + '" tabindex="0" role="button" aria-label="Edit ' + row[1].toLowerCase() + '">' +
+        '<span class="k">' + row[1] + '</span><span class="v">' + esc(row[2]) + '</span><span class="edit">Edit</span></li>';
+    }).join("");
   }
+
+  function jumpToControl(id) {
+    var el = $(id);
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+    if (el.tagName === "INPUT" || el.tagName === "SELECT") {
+      setTimeout(function () { el.focus(); }, 300);
+    }
+  }
+
+  $("alertPrefs").addEventListener("click", function (e) {
+    var li = e.target.closest("li[data-target]");
+    if (li) jumpToControl(li.dataset.target);
+  });
+  $("alertPrefs").addEventListener("keydown", function (e) {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    var li = e.target.closest("li[data-target]");
+    if (!li) return;
+    e.preventDefault();
+    jumpToControl(li.dataset.target);
+  });
 
   /* ---------- boot ---------- */
   loadState();
@@ -970,7 +1007,7 @@
       setHome({ lat: pos.coords.latitude, lng: pos.coords.longitude, label: "your current location" });
     }, function () {
       hint.className = "search-hint err";
-      hint.textContent = "Couldn't get your location — type an address instead.";
+      hint.textContent = "Couldn't get your location, type an address instead.";
     });
   });
   $("radiusSelect").addEventListener("change", function () {
