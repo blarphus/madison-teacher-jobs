@@ -413,6 +413,14 @@
     this.textContent = themeLabel();
   });
 
+  // UW–Madison Teacher Education Building, 225 N. Mills St., Madison, WI —
+  // same reference point the daily Google Doc report uses for drive time.
+  // Used as the default location until a visitor searches their own address.
+  var DEFAULT_HOME = {
+    lat: 43.0712798, lng: -89.403602,
+    label: "225 N Mills St, Madison, WI (UW–Madison Teacher Education Building)"
+  };
+
   var state = {
     jobs: [],
     subjectLabels: {},
@@ -700,12 +708,16 @@
     var hint = $("searchHint");
     if (home) {
       hint.className = "search-hint";
+      var isDefault = home.label === DEFAULT_HOME.label;
       hint.innerHTML = '<span class="loc-chip">Showing distances from ' + esc(home.label || "your location") +
-        ' <button title="Clear location" aria-label="Clear location" id="clearLoc">clear</button></span>';
-      document.getElementById("clearLoc").addEventListener("click", function () {
-        setHome(null);
-        $("addrInput").value = "";
-      });
+        (isDefault ? "" : ' <button title="Reset to default location" aria-label="Reset to default location" id="clearLoc">reset to default</button>') +
+        "</span>";
+      if (!isDefault) {
+        document.getElementById("clearLoc").addEventListener("click", function () {
+          $("addrInput").value = DEFAULT_HOME.label;
+          setHome(DEFAULT_HOME);
+        });
+      }
       if (state.sortKey !== "distance") {
         state.sortKey = "distance"; state.sortDir = "asc";
         $("sortSelect").value = "distance:asc";
@@ -726,7 +738,7 @@
     var addr = $("addrInput").value.trim();
     var hint = $("searchHint");
     hideSuggestions();
-    if (!addr) { setHome(null); return; }
+    if (!addr) { $("addrInput").value = DEFAULT_HOME.label; setHome(DEFAULT_HOME); return; }
     $("searchBtn").disabled = true;
     hint.className = "search-hint";
     hint.textContent = "Looking up address…";
@@ -967,6 +979,7 @@
       (when ? " · updated " + when.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" }) : "");
     $("loadingBox").style.display = "none";
     buildChips();
+    if (!state.home) state.home = DEFAULT_HOME;
     if (state.home) {
       $("addrInput").value = state.home.label || "";
       setHome(state.home);
