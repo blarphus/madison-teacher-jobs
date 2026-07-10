@@ -7,10 +7,6 @@
     45.0935808,
     -87.6182613
   ],
-  "argyle school district": [
-    42.7012216,
-    -89.8669854
-  ],
   "bader hillel academy": null,
   "bader hillel high": [
     43.140365,
@@ -50,7 +46,7 @@
     -88.0663209
   ],
   "bristol school district # 1": [
-    44.960917,
+    44.960916,
     -92.703225
   ],
   "brodhead school district": [
@@ -114,6 +110,10 @@
     42.7851871,
     -88.4054374
   ],
+  "elkhorn area school district": [
+    42.6719206,
+    -88.543494
+  ],
   "elmbrook schools": [
     43.0227593,
     -88.1684094
@@ -123,10 +123,6 @@
     -90.6555931
   ],
   "geneva joint 4 - woods school": null,
-  "gibraltar": [
-    45.1783678,
-    -87.3025229
-  ],
   "glendale-river hills school district": null,
   "granton area schools": [
     44.5872517,
@@ -203,8 +199,8 @@
   ],
   "lakeland uhs district": null,
   "luxemburg-casco school district": [
-    44.548052,
-    -87.7056351
+    44.5492553,
+    -87.6999895
   ],
   "manitowoc public school district": [
     44.0998341,
@@ -227,13 +223,13 @@
     43.0379584,
     -87.9558448
   ],
-  "medford area public school district": [
-    45.1391437,
-    -90.3460806
-  ],
   "menasha joint school district": [
     44.2022293,
     -88.4465361
+  ],
+  "menominee indian school district": [
+    44.9762964,
+    -88.7347165
   ],
   "mequon-thiensville school district": [
     43.2396327,
@@ -243,6 +239,7 @@
     43.1541501,
     -88.3695085
   ],
+  "mmsd:black hawk": null,
   "mmsd:capital high": [
     43.0690022,
     -89.439327
@@ -255,15 +252,15 @@
     43.0554226,
     -89.3876581
   ],
-  "mmsd:gompers": [
-    43.1467126,
-    -89.3697456
-  ],
   "mmsd:henderson": [
     43.057534,
     -89.3120861
   ],
   "mmsd:innovative high": null,
+  "mmsd:kennedy": [
+    43.0940072,
+    -89.2973904
+  ],
   "mmsd:la follette": [
     43.0641796,
     -89.3199528
@@ -280,13 +277,13 @@
     43.0639225,
     -89.5010366
   ],
-  "mmsd:mendota": [
-    43.1370862,
-    -89.3848164
-  ],
   "mmsd:midvale": [
     43.0573476,
     -89.4501056
+  ],
+  "mmsd:muir": [
+    43.0684477,
+    -89.4944267
   ],
   "mmsd:nuestro mundo": null,
   "mmsd:o'keeffe": [
@@ -302,6 +299,14 @@
     -89.3247882
   ],
   "mmsd:sennett": null,
+  "mmsd:sherman": [
+    43.1177357,
+    -89.3621885
+  ],
+  "mmsd:stephens": [
+    43.0656506,
+    -89.4802776
+  ],
   "mmsd:west": [
     43.0686283,
     -89.4271064
@@ -311,6 +316,14 @@
     -89.4271064
   ],
   "mmsd:whitehorse": null,
+  "mmsd:wright": [
+    43.0484371,
+    -89.4002258
+  ],
+  "mosinee school district": [
+    44.7927669,
+    -89.7030748
+  ],
   "mukwonago area school district": [
     42.8666803,
     -88.3334274
@@ -334,6 +347,7 @@
     -89.8918206
   ],
   "north wisconsin district lcms": null,
+  "northern ozaukee school district": null,
   "oak creek-franklin joint school district": [
     42.9054721,
     -87.9265921
@@ -363,7 +377,16 @@
     -87.977038
   ],
   "port washington-saukville school district": null,
+  "prairie du chien area school district": [
+    43.05194,
+    -91.1409933
+  ],
+  "prairie farm": [
+    45.237184,
+    -91.9815675
+  ],
   "randall consolidated joint district #1": null,
+  "regis catholic schools": null,
   "rice lake area school district": [
     45.5027926,
     -91.733423
@@ -381,6 +404,10 @@
     -87.9201256
   ],
   "rural virtual academy": null,
+  "sauk prairie school district": [
+    43.2981475,
+    -89.7565455
+  ],
   "school district of abbotsford": [
     44.9471087,
     -90.3194786
@@ -595,16 +622,12 @@
   ],
   "the richardson school": null,
   "tomorrow river school district": [
-    44.4309644,
-    -89.2759685
+    44.430922,
+    -89.2760799
   ],
   "twin lakes school district #4": [
     42.5315239,
     -88.2479278
-  ],
-  "two rivers public school district": [
-    44.149206,
-    -87.5682149
   ],
   "unified school district of de pere": [
     44.4467461,
