@@ -38,8 +38,8 @@
   ],
   "blessed savior catholic school": null,
   "brighton #1 school district": [
-    44.243205,
-    -88.365803
+    44.243206,
+    -88.365804
   ],
   "brillion public schools": [
     44.1735573,
@@ -123,6 +123,10 @@
     -90.6555931
   ],
   "geneva joint 4 - woods school": null,
+  "germantown school district": [
+    43.2286174,
+    -88.1103691
+  ],
   "glendale-river hills school district": null,
   "granton area schools": [
     44.5872517,
@@ -161,8 +165,8 @@
     -92.7554671
   ],
   "iola-scandinavia school district": [
-    44.5020673,
-    -89.1270679
+    44.5013633,
+    -89.1275776
   ],
   "iowa-grant school district": [
     42.9313785,
@@ -188,6 +192,10 @@
     43.912493,
     -88.0356515
   ],
+  "kimberly area school district": [
+    44.2717086,
+    -88.3400807
+  ],
   "lac du flambeau #1": [
     45.9702769,
     -89.8928015
@@ -199,8 +207,12 @@
   ],
   "lakeland uhs district": null,
   "luxemburg-casco school district": [
-    44.5492553,
-    -87.6999895
+    44.5479649,
+    -87.7054499
+  ],
+  "madison country day school": [
+    43.1633642,
+    -89.3867593
   ],
   "manitowoc public school district": [
     44.0998341,
@@ -417,8 +429,8 @@
     -90.9126506
   ],
   "school district of altoona": [
-    44.8046825,
-    -91.4429355
+    44.8064265,
+    -91.4338323
   ],
   "school district of ashland": [
     46.2062319,
@@ -500,6 +512,10 @@
     43.591382,
     -88.443713
   ],
+  "school district of manawa": [
+    44.4644255,
+    -88.919829
+  ],
   "school district of maple": [
     46.5896621,
     -91.7207434
@@ -540,10 +556,6 @@
     45.636623,
     -89.412075
   ],
-  "school district of river falls": [
-    44.8596498,
-    -92.6255048
-  ],
   "school district of shiocton": [
     44.4420959,
     -88.5791057
@@ -552,10 +564,6 @@
     44.9012628,
     -91.9297247
   ],
-  "school district of waupaca": [
-    44.4927889,
-    -88.9650419
-  ],
   "school district of westfield": [
     43.8856953,
     -89.493266
@@ -563,10 +571,6 @@
   "school district of whitefish bay": [
     43.1185591,
     -87.906804
-  ],
-  "school district of wild rose": [
-    44.1800174,
-    -89.2475259
   ],
   "school district of wisconsin dells": [
     43.6256168,
@@ -584,10 +588,6 @@
   "silver lake j1": [
     42.5459345,
     -88.1657846
-  ],
-  "siren school district": [
-    45.7874336,
-    -92.3819709
   ],
   "southern door county school district": [
     44.774689,
@@ -616,14 +616,10 @@
     44.8341639,
     -87.377042
   ],
-  "superior school district": [
-    46.4800042,
-    -92.1829648
-  ],
   "the richardson school": null,
   "tomorrow river school district": [
-    44.430922,
-    -89.2760799
+    44.4309644,
+    -89.2759685
   ],
   "twin lakes school district #4": [
     42.5315239,
