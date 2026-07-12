@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-11T09:01:31.765081-05:00",
+ "generated_at": "2026-07-12T09:04:05.809021-05:00",
  "weeks": 3,
  "subject_labels": {
   "english": "English / ELA",
@@ -19,6 +19,38 @@
   "high": "High school"
  },
  "jobs": [
+  {
+   "id": "268468",
+   "title": "Teaching Associate",
+   "district": "Open Wings Learning Community",
+   "location": "Open Wings Learning Community-Kenosha Campus",
+   "posted": "2026-07-11",
+   "start": "8/17/2026",
+   "close": "Until filled",
+   "url": "https://wecan.waspa.org/Vacancy/268468",
+   "source": "wecan",
+   "lat": null,
+   "lng": null,
+   "subjects": [],
+   "levels": []
+  },
+  {
+   "id": "268465",
+   "title": "Grade 6 Writing",
+   "district": "Richland School District",
+   "location": "Richland Center Intermediate School",
+   "posted": "2026-07-11",
+   "start": "8/18/2026",
+   "close": "7/15/2026",
+   "url": "https://wecan.waspa.org/Vacancy/268465",
+   "source": "wecan",
+   "lat": 43.3662526,
+   "lng": -90.4557081,
+   "subjects": [],
+   "levels": [
+    "middle"
+   ]
+  },
   {
    "id": "268464",
    "title": "Computer Science & Engineering / Technology Education Teacher",
@@ -43,7 +75,7 @@
    "id": "268462",
    "title": "Dean of Students",
    "district": "Germantown School District",
-   "location": "Kennedy Middle School",
+   "location": "Kennedy Middle School.",
    "posted": "2026-07-10",
    "start": "8/20/2026",
    "close": "Until filled",
@@ -1010,8 +1042,8 @@
    "close": "Until filled",
    "url": "https://wecan.waspa.org/Vacancy/268307",
    "source": "wecan",
-   "lat": 44.8064265,
-   "lng": -91.4338323,
+   "lat": 44.8046825,
+   "lng": -91.4429355,
    "subjects": [
     "cs_tech"
    ],
@@ -1082,7 +1114,7 @@
    "close": "7/23/2026",
    "url": "https://wecan.waspa.org/Vacancy/268292",
    "source": "wecan",
-   "lat": 44.960916,
+   "lat": 44.960917,
    "lng": -92.703225,
    "subjects": [
     "art"
@@ -4483,8 +4515,8 @@
    "close": "Until filled",
    "url": "https://wecan.waspa.org/Vacancy/267772",
    "source": "wecan",
-   "lat": 44.5479649,
-   "lng": -87.7054499,
+   "lat": 44.548052,
+   "lng": -87.7056351,
    "subjects": [
     "math"
    ],
@@ -5329,7 +5361,7 @@
    "id": "267619",
    "title": "K-5 Reading Interventionist",
    "district": "School District of North Fond du Lac",
-   "location": "Friendship Learning Center",
+   "location": "Friendship Learning Center: School District of North Fond du Lac",
    "posted": "2026-07-01",
    "start": "8/10/2026",
    "close": "7/17/2026",
@@ -6839,7 +6871,7 @@
   },
   {
    "id": "267307",
-   "title": "Middle School Social StudiesTeacher",
+   "title": "Social StudiesTeacher",
    "district": "Bader Hillel Academy",
    "location": "Bader Hillel Academy",
    "posted": "2026-06-29",
@@ -6850,9 +6882,7 @@
    "lat": null,
    "lng": null,
    "subjects": [],
-   "levels": [
-    "middle"
-   ]
+   "levels": []
   },
   {
    "id": "267305",
@@ -7641,8 +7671,8 @@
    "close": "Until filled",
    "url": "https://wecan.waspa.org/Vacancy/267146",
    "source": "wecan",
-   "lat": 44.8064265,
-   "lng": -91.4338323,
+   "lat": 44.8046825,
+   "lng": -91.4429355,
    "subjects": [],
    "levels": [
     "elementary",
@@ -8685,8 +8715,8 @@
    "close": "Until filled",
    "url": "https://wecan.waspa.org/Vacancy/266917",
    "source": "wecan",
-   "lat": 44.4309644,
-   "lng": -89.2759685,
+   "lat": 44.430922,
+   "lng": -89.2760799,
    "subjects": [],
    "levels": [
     "elementary"
@@ -9196,8 +9226,8 @@
    "close": "Until filled",
    "url": "https://wecan.waspa.org/Vacancy/266794",
    "source": "wecan",
-   "lat": 44.5013633,
-   "lng": -89.1275776,
+   "lat": 44.5020673,
+   "lng": -89.1270679,
    "subjects": [
     "art"
    ],
