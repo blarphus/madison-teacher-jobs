@@ -11,6 +11,11 @@
     45.0935808,
     -87.6182613
   ],
+  "argyle school district": [
+    42.7012216,
+    -89.8669854
+  ],
+  "arrowhead union high school": null,
   "ashwaubenon school district": [
     44.4752606,
     -88.060735
@@ -50,7 +55,7 @@
     -88.365804
   ],
   "bristol school district # 1": [
-    44.960917,
+    44.960916,
     -92.703225
   ],
   "brodhead school district": [
@@ -82,6 +87,7 @@
   ],
   "cesa 2": null,
   "cesa 5": null,
+  "cesa 6": null,
   "cesa 7": null,
   "chetek-weyerhaeuser area school district": [
     45.309305,
@@ -117,8 +123,8 @@
     -87.8554529
   ],
   "dodgeland school district": [
-    43.4016194,
-    -88.7166629
+    43.4025756,
+    -88.7162216
   ],
   "dover #1 kansasville": null,
   "downtown montessori academy": [
@@ -134,10 +140,6 @@
     -88.4054374
   ],
   "elkhart lake-glenbeulah school district": null,
-  "ellsworth community school district": [
-    44.732122,
-    -92.4831218
-  ],
   "elmbrook schools": [
     43.0227593,
     -88.1684094
@@ -155,15 +157,15 @@
     -87.9116753
   ],
   "fundamentals llc": null,
+  "genesee lake school": null,
   "geneva joint 4 - woods school": null,
   "germantown school district": [
     43.2286174,
     -88.1103691
   ],
-  "glendale-river hills school district": null,
-  "granton area schools": [
-    44.5872517,
-    -90.4624637
+  "hamilton school district": [
+    43.9222491,
+    -91.1060036
   ],
   "heritage christian schools": [
     43.018643,
@@ -228,8 +230,8 @@
     -88.3184394
   ],
   "luxemburg-casco school district": [
-    44.5492553,
-    -87.6999895
+    44.548052,
+    -87.7056351
   ],
   "madison country day school": [
     43.1633642,
@@ -240,10 +242,6 @@
     -87.827992
   ],
   "maple dale-indian hill school district": null,
-  "marathon county special education": [
-    44.9314487,
-    -89.6370141
-  ],
   "marinette school district": [
     45.3834983,
     -88.0409574
@@ -259,10 +257,6 @@
   "medford area public school district": [
     45.1391437,
     -90.3460806
-  ],
-  "menominee indian school district": [
-    44.9762964,
-    -88.7347165
   ],
   "mequon-thiensville school district": [
     43.2396327,
@@ -280,6 +274,18 @@
   "mmsd:crestwood": [
     43.0763026,
     -89.4820007
+  ],
+  "mmsd:doyle": [
+    43.07063,
+    -89.3950391
+  ],
+  "mmsd:gompers": [
+    43.1467126,
+    -89.3697456
+  ],
+  "mmsd:hawthorne": [
+    43.1120346,
+    -89.3282322
   ],
   "mmsd:henderson": [
     43.057534,
@@ -306,6 +312,10 @@
     43.0639225,
     -89.5010366
   ],
+  "mmsd:midvale": [
+    43.0573476,
+    -89.4501056
+  ],
   "mmsd:muir": [
     43.0684477,
     -89.4944267
@@ -318,6 +328,10 @@
   "mmsd:sherman": [
     43.1177357,
     -89.3621885
+  ],
+  "mmsd:shorewood": [
+    43.079418,
+    -89.4423102
   ],
   "mmsd:stephens": [
     43.0656506,
@@ -332,6 +346,10 @@
     -89.4271064
   ],
   "mmsd:whitehorse": null,
+  "mmsd:wright": [
+    43.0484371,
+    -89.4002258
+  ],
   "montello school district": [
     43.7918612,
     -89.3288187
@@ -417,6 +435,10 @@
   ],
   "randall consolidated joint district #1": null,
   "regis catholic schools": null,
+  "rice lake area school district": [
+    45.5027926,
+    -91.733423
+  ],
   "richland school district": [
     43.3662526,
     -90.4557081
@@ -470,6 +492,10 @@
     44.7399556,
     -88.4461285
   ],
+  "school district of brown deer": [
+    43.1744352,
+    -87.972722
+  ],
   "school district of cudahy": [
     42.959738,
     -87.861471
@@ -481,10 +507,6 @@
   "school district of flambeau": [
     45.518201,
     -91.1121797
-  ],
-  "school district of florence county": [
-    45.8379973,
-    -88.3902943
   ],
   "school district of glenwood city": [
     45.0586304,
@@ -578,6 +600,10 @@
     44.5429082,
     -88.312718
   ],
+  "shawano school district": [
+    44.7817214,
+    -88.7118868
+  ],
   "shepherd's watch christian academy": null,
   "shorewood school district": [
     43.0883957,
@@ -597,12 +623,8 @@
   ],
   "st. bruno parish school": null,
   "st. croix central school district": [
-    44.9768064,
-    -92.4363528
-  ],
-  "st. francis school district": [
-    42.9744081,
-    -87.8709308
+    44.9823306,
+    -92.4486371
   ],
   "st. john's lutheran school": [
     42.7396306,
@@ -622,6 +644,10 @@
     44.8341639,
     -87.377042
   ],
+  "superior school district": [
+    46.4800042,
+    -92.1829648
+  ],
   "the richardson school": null,
   "twin lakes school district #4": [
     42.5315239,
@@ -639,8 +665,11 @@
     44.4460334,
     -88.0681845
   ],
-  "union grove elementary school - j1": null,
   "waterford graded school district": null,
+  "waterford union": [
+    42.7639055,
+    -88.2187009
+  ],
   "waupun area school district": [
     43.633216,
     -88.7296352
