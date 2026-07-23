@@ -7,6 +7,10 @@
     43.9653066,
     -89.8014791
   ],
+  "alma": [
+    44.320281,
+    -91.9149094
+  ],
   "aquinas catholic schools": [
     45.0935808,
     -87.6182613
@@ -40,14 +44,10 @@
     42.5510515,
     -88.5739338
   ],
-  "birchwood schools": [
-    45.6565578,
-    -91.5557084
-  ],
   "blessed savior catholic school": null,
   "brighton #1 school district": [
-    44.243206,
-    -88.365804
+    44.243205,
+    -88.365803
   ],
   "bristol school district # 1": [
     44.960916,
@@ -64,10 +64,6 @@
   "cashton school district": [
     43.7430214,
     -90.7788501
-  ],
-  "cassville school district": [
-    42.7144408,
-    -90.9907697
   ],
   "cedar grove-belgium area school district": null,
   "cedarburg school district": [
@@ -158,6 +154,10 @@
     43.1760575,
     -87.9116753
   ],
+  "freedom area school district": [
+    44.3838948,
+    -88.2942301
+  ],
   "fundamentals llc": null,
   "genesee lake school": null,
   "geneva joint 4 - woods school": null,
@@ -198,10 +198,6 @@
     -92.7554671
   ],
   "indian community school, inc.": null,
-  "kaukauna area school district": [
-    44.2780432,
-    -88.2720503
-  ],
   "kewaunee school district": [
     44.521282,
     -87.6301086
@@ -227,10 +223,6 @@
     43.1029333,
     -88.354607
   ],
-  "lake geneva schools": [
-    42.571693,
-    -88.4152537
-  ],
   "lena": [
     44.9510985,
     -88.0469998
@@ -252,6 +244,10 @@
     -87.827992
   ],
   "maple dale-indian hill school district": null,
+  "marathon county special education": [
+    44.9314487,
+    -89.6370141
+  ],
   "marinette school district": [
     45.3834983,
     -88.0409574
@@ -375,10 +371,6 @@
     43.1116731,
     -88.4992659
   ],
-  "oconto falls public schools": [
-    44.8747779,
-    -88.1432681
-  ],
   "oconto unified school district": [
     44.9988053,
     -88.2480072
@@ -387,6 +379,10 @@
   "palmyra-eagle area school district": [
     42.8740009,
     -88.5928511
+  ],
+  "pardeeville area school district": [
+    43.5377608,
+    -89.3001174
   ],
   "pewaukee school district": [
     43.0846017,
@@ -428,6 +424,10 @@
     -88.8387158
   ],
   "rural virtual academy": null,
+  "salem school district": [
+    43.9481892,
+    -90.7552826
+  ],
   "sauk prairie school district": [
     43.2981475,
     -89.7565455
@@ -471,10 +471,6 @@
   "school district of brown deer": [
     43.1744352,
     -87.972722
-  ],
-  "school district of denmark": [
-    44.3479362,
-    -87.8269868
   ],
   "school district of edgerton": [
     42.8334758,
@@ -520,9 +516,17 @@
     46.5896621,
     -91.7207434
   ],
+  "school district of mauston": [
+    43.7968543,
+    -90.0756767
+  ],
   "school district of menomonee falls": [
     43.1790768,
     -88.1170784
+  ],
+  "school district of mercer": [
+    46.165642,
+    -90.0633148
   ],
   "school district of milton": [
     42.7753567,
@@ -531,10 +535,6 @@
   "school district of new berlin": [
     42.9762181,
     -88.1084968
-  ],
-  "school district of niagara": [
-    45.7716775,
-    -87.9981489
   ],
   "school district of oakfield": [
     43.6836929,
@@ -597,14 +597,17 @@
     44.774689,
     -87.5246702
   ],
+  "southwestern wi community school district": [
+    46.3112129,
+    -91.3100894
+  ],
   "sparta area school district": [
     43.9732475,
     -90.8516564
   ],
-  "st. bruno parish school": null,
   "st. croix central school district": [
-    44.9768064,
-    -92.4363528
+    44.9823306,
+    -92.4486371
   ],
   "st. francis school district": [
     42.9744081,
@@ -645,10 +648,9 @@
     -89.0933548
   ],
   "unified school district of de pere": [
-    44.4460334,
-    -88.0681845
+    44.4467461,
+    -88.067779
   ],
-  "waterford graded school district": null,
   "waterford union": [
     42.7639055,
     -88.2187009
